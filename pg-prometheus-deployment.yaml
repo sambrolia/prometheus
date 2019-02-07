@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pg-prometheus-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pg-prometheus
+    spec:
+      containers:
+        - name: pg-prometheus
+          image: timescale/pg_prometheus:0.2.1
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - "-csynchronous_commit=off"
+          envFrom:
+            - configMapRef:
+                name: pg-prometheus-config-map
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pg-prometheus-db
+              mountPath: /var/lib/postgresql/data/
+      volumes:
+        - name: pg-prometheus-db
+          persistentVolumeClaim:
+            claimName: pg-prometheus-pv-claim

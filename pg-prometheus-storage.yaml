@@ -1,0 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pg-prometheus-pv-volume
+  labels:
+    type: local
+    app: pg-prometheus
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /host_mnt/c/kube-data/pg-prometheus/pg-prometheus-db-pv
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pg-prometheus-pv-claim
+  labels:
+    app: pg-prometheus
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
