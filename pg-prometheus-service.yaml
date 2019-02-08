@@ -7,6 +7,4 @@ spec:
     app: pg-prometheus
   type: NodePort  
   ports:
-    - protocol: TCP
-      port: 30001
-      targetPort: 5432
+    - port: 5432

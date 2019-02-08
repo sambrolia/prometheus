@@ -14,6 +14,7 @@ spec:
           image: timescale/pg_prometheus:0.2.1
           imagePullPolicy: "IfNotPresent"
           args:
+            - "postgres"
             - "-csynchronous_commit=off"
           envFrom:
             - configMapRef:
