@@ -2,6 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: pg-prometheus-pv-volume
+  namespace: monitoring
   labels:
     type: local
     app: pg-prometheus
@@ -18,6 +19,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: pg-prometheus-pv-claim
+  namespace: monitoring
   labels:
     app: pg-prometheus
 spec:

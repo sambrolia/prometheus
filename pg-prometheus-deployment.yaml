@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: pg-prometheus-deployment
+  namespace: monitoring
 spec:
   replicas: 1
   template:

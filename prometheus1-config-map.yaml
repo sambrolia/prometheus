@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus1-server-conf
+  namespace: monitoring
   labels:
     name: prometheus1-server-conf
 data:
@@ -35,8 +36,8 @@ data:
 
         static_configs:
         - targets: ['localhost:9090']
-    remote_write:
-    - url: "http://localhost:9201/write"
-    remote_read:
-    - url: "http://localhost:9201/read"
-      read_recent: true
+#    remote_write:
+#    - url: "http://localhost:9201/write"
+#    remote_read:
+#    - url: "http://localhost:9201/read"
+#      read_recent: true

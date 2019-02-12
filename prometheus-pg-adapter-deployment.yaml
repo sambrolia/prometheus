@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: prometheus-pg-adapter-deployment
+  namespace: monitoring
 spec:
   replicas: 1
   template:
