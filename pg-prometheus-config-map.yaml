@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pg-prometheus-config-map
+  name: pg-prometheus
   namespace: monitoring
   labels:
     app: pg-prometheus

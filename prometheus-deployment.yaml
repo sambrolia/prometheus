@@ -1,18 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: prometheus-deployment
+  name: prometheus
   namespace: monitoring
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
-        app: prometheus-server
+        app: prometheus
     spec:
       containers:
-        # First Prometheus Container
-        - name: prometheus1
+        # Prometheus Instance
+        - name: prometheus
           image: prom/prometheus:v2.2.1
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
@@ -20,39 +20,28 @@ spec:
           ports:
             - containerPort: 9090
           volumeMounts:
-            - name: prometheus1-config-volume
+            - name: prometheus-config
               mountPath: /etc/prometheus/
-            - name: prometheus1-storage-volume
+            - name: prometheus-storage
               mountPath: /prometheus/
-        # Second Prometheus Container
-        - name: prometheus2
-          image: prom/prometheus:v2.2.1
+        # pg-adapter
+        - name: prometheus-pg-adapter
+          image: timescale/prometheus-postgresql-adapter:0.4.1
+          imagePullPolicy: "IfNotPresent"
           args:
-            - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.path=/prometheus/"
-            - "--web.listen-address=:9092"
+            - "-pg.host=pg-prometheus"
+            - "-pg.prometheus-log-samples"
+            - "-log.level=debug"
+            - "-leader-election.pg-advisory-lock-id=1"
+            - "-leader-election.pg-advisory-lock.prometheus-timeout=6s"
           ports:
-            - containerPort: 9090
-          volumeMounts:
-            - name: prometheus2-config-volume
-              mountPath: /etc/prometheus/
-            - name: prometheus2-storage-volume
-              mountPath: /prometheus/
+            - containerPort: 9201
       volumes:
         # Volumes for First Prometheus
-        - name: prometheus1-config-volume
+        - name: prometheus-config
           configMap:
             defaultMode: 420
-            name: prometheus1-server-conf
+            name: prometheus-server-conf
   
-        - name: prometheus1-storage-volume
-          emptyDir: {}
-          
-        # Volumes for Second Prometheus
-        - name: prometheus2-config-volume
-          configMap:
-            defaultMode: 420
-            name: prometheus2-server-conf
-  
-        - name: prometheus2-storage-volume
+        - name: prometheus-storage
           emptyDir: {}

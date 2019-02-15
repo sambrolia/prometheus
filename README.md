@@ -29,21 +29,11 @@ kubectl -n kube-system describe secret default-token-dqwm8
 # Navigate to dashboard
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/overview?namespace=default
 
-# Set up monitoring namespace
-kubectl create -f monitoring-namespace.yaml
+# Set up
+create-all.bat
 
-kubectl create -f prometheus1-config-map.yaml
-kubectl create -f prometheus2-config-map.yaml
-kubectl create -f prometheus-deployment.yaml
-
-kubectl -n monitoring logs rometheus-deployment-676bd4d59d-gxqh9 prometheus1
-
-kubectl create -f prometheus-service.yaml
-
-kubectl create -f pg-prometheus-config-map.yaml
-kubectl create -f pg-prometheus-storage.yaml
-kubectl create -f pg-prometheus-deployment.yaml
-kubectl create -f pg-prometheus-service.yaml
+# Helpful commands
+kubectl -n monitoring logs prometheus-deployment-676bd4d59d-gxqh9 prometheus1
 
 # replace 31204 with port shown when you check kubectl get services
 psql -h localhost -U postgresadmin --password -p 31204 postgresdb

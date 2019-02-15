@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus2-server-conf
+  name: prometheus-server-conf
   namespace: monitoring
   labels:
-    name: prometheus2-server-conf
+    name: prometheus1-server-conf
 data:
   prometheus.yml: |-
     # my global config
@@ -35,7 +35,7 @@ data:
         # scheme defaults to 'http'.
 
         static_configs:
-        - targets: ['localhost:9091']
+        - targets: ['localhost:9090']
 #    remote_write:
 #    - url: "http://localhost:9201/write"
 #    remote_read:

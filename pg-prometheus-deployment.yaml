@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: pg-prometheus-deployment
+  name: pg-prometheus
   namespace: monitoring
 spec:
   replicas: 1
@@ -19,7 +19,7 @@ spec:
             - "-csynchronous_commit=off"
           envFrom:
             - configMapRef:
-                name: pg-prometheus-config-map
+                name: pg-prometheus
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -28,4 +28,4 @@ spec:
       volumes:
         - name: pg-prometheus-db
           persistentVolumeClaim:
-            claimName: pg-prometheus-pv-claim
+            claimName: pg-prometheus
