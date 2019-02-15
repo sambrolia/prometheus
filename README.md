@@ -24,7 +24,7 @@ kubectl create -f kubernetes-dashboard.yaml
 kubectl -n kube-system get secrets
 
 # Get user token
-kubectl -n kube-system describe default-token-dqwm8
+kubectl -n kube-system describe secret default-token-dqwm8
 
 # Navigate to dashboard
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/overview?namespace=default
