@@ -31,11 +31,17 @@ spec:
           args:
             - "-pg.host=pg-prometheus"
             - "-pg.prometheus-log-samples"
+            - "-pg.database=$(POSTGRES_DB)"
+            - "-pg.user=$(POSTGRES_USER)"
+            - "-pg.password=$(POSTGRES_PASSWORD)"
             - "-log.level=debug"
             - "-leader-election.pg-advisory-lock-id=1"
             - "-leader-election.pg-advisory-lock.prometheus-timeout=6s"
           ports:
             - containerPort: 9201
+          envFrom:
+            - configMapRef:
+                name: pg-prometheus
       volumes:
         # Volumes for First Prometheus
         - name: prometheus-config
