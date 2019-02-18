@@ -4,6 +4,7 @@ Kubenetes deployment for Prometheus
 # Design
 ![Alt text](design/metrics-design.png?raw=true "Title")
 
+**See subfolders for further design detail**
 
 
 # Build commands
@@ -18,7 +19,7 @@ delete-all.bat
 # Extras
 
 ```bash
-kubectl create -f kubernetes-dashboard.yaml
+kubectl create -f misc/kubernetes-dashboard.yaml
 
 # Find user secret
 kubectl -n kube-system get secrets
