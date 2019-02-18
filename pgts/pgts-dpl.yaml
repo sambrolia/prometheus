@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pgts-dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pgts
+    spec:
+      containers:
+        - name: pgts
+          image: timescale/pg_prometheus:0.2.1
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - "postgres"
+            - "-csynchronous_commit=off"
+          envFrom:
+            - configMapRef:
+                name: pgts-cm
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgts-vol
+              mountPath: /var/lib/postgresql/data/
+      volumes:
+        - name: pgts-vol
+          persistentVolumeClaim:
+            claimName: pgts-pvc

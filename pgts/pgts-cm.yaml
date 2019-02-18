@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pg-prometheus
-  namespace: monitoring
+  name: pgts-cm
   labels:
-    app: pg-prometheus
+    app: pgts
 data:
   POSTGRES_DB: postgresdb
   POSTGRES_USER: postgresadmin

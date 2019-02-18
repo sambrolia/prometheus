@@ -1,32 +1,17 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus-service
-  namespace: monitoring
-spec:
-  selector: 
-    app: prometheus-server
-  type: NodePort  
-  ports:
-    - protocol: TCP
-      port: 30000
-      targetPort: 9090
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: prometheus
-  namespace: monitoring
+  name: prom-dpl
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: prometheus
+        app: prom
     spec:
       containers:
         # Prometheus Instance
-        - name: prometheus
+        - name: prom
           image: prom/prometheus:v2.2.1
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
@@ -34,16 +19,16 @@ spec:
           ports:
             - containerPort: 9090
           volumeMounts:
-            - name: prometheus-config
+            - name: prom-config
               mountPath: /etc/prometheus/
-            - name: prometheus-storage
+            - name: prom-data
               mountPath: /prometheus/
         # pg-adapter
-        - name: prometheus-pg-adapter
+        - name: prom-adp
           image: timescale/prometheus-postgresql-adapter:0.4.1
           imagePullPolicy: "IfNotPresent"
           args:
-            - "-pg.host=pg-prometheus"
+            - "-pg.host=pgts-svc"
             - "-pg.prometheus-log-samples"
             - "-pg.database=$(POSTGRES_DB)"
             - "-pg.user=$(POSTGRES_USER)"
@@ -55,13 +40,13 @@ spec:
             - containerPort: 9201
           envFrom:
             - configMapRef:
-                name: pg-prometheus
+                name: pgts-cm
       volumes:
         # Volumes for First Prometheus
-        - name: prometheus-config
+        - name: prom-config
           configMap:
             defaultMode: 420
-            name: prometheus-server-conf
+            name: prom-cm
   
-        - name: prometheus-storage
+        - name: prom-data
           emptyDir: {}
